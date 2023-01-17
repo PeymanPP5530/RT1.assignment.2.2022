@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/peyman/my_ros_ws/devel/include/**",
+        "/home/peyman/ros_catkin_ws/install_isolated/include/**",
+        "/home/peyman/my_ros_ws/src/my_action/include/**",
+        "/home/peyman/my_ros_ws/src/my_first_package/include/**",
+        "/home/peyman/my_ros_ws/src/peymantt/include/**",
+        "/home/peyman/my_ros_ws/src/turtlesim_cotroller/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
