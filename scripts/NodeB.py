@@ -2,38 +2,32 @@
 
 import rospy
 from nav_msgs.msg import Odometry
-from std_msgs.msg import String
 from assignment_2_2022.msg import odom_custom_msg
-
 
 
 def callback(data):
 
-    pub = rospy.Publisher('chatter', odom_custom_msg, queue_size=50)
-    #print(data)
-    msg=odom_custom_msg()
+    my_publisher = rospy.Publisher('position_and_velocity', odom_custom_msg, queue_size=5)
 
-    msg.x = data.pose.pose.position.x
-    msg.y = data.pose.pose.position.y
-    msg.vel_x = data.twist.twist.linear.x
-    msg.vel_y = data.twist.twist.linear.y
+    my_custom_message = odom_custom_msg()
 
+    my_custom_message.x = data.pose.pose.position.x
+    my_custom_message.y = data.pose.pose.position.y
+    my_custom_message.vel_x = data.twist.twist.linear.x
+    my_custom_message.vel_y = data.twist.twist.linear.y
 
-    print(msg)
-    pub.publish(msg)
+    print("###################################")
+    print(my_custom_message)
+    my_publisher.publish(my_custom_message)
 
    # rospy.sleep(1)   
     
-def listener():
-    
-
-    rospy.init_node('NodeB')
-
-    rospy.Subscriber("/odom", Odometry, callback)
-
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
 
 if __name__ == '__main__':
-    listener()
+
+    rospy.init_node('NodeB')    
+    rospy.Subscriber("/odom", Odometry, callback)
     
+    # spin() simply keeps python from exiting until this node is stopped
+
+    rospy.spin()

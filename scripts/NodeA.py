@@ -1,23 +1,16 @@
 #! /usr/bin/env python3
 
 import rospy
-from geometry_msgs.msg import Point, Pose, Twist
 from geometry_msgs.msg import PoseStamped
-from sensor_msgs.msg import LaserScan
-from nav_msgs.msg import Odometry
-import math
-import actionlib
+
 import actionlib.msg
 import assignment_2_2022.msg
-from tf import transformations
-from std_srvs.srv import *
-import time
+#from std_srvs.srv import *
+
 
 # Brings in the SimpleActionClient
 import actionlib
-import actionlib_msgs
 import assignment_2_2022.msg
-
 import os
 
 
@@ -29,23 +22,27 @@ import os
 def target_client():
 
 
-    value1 = input("Please enter X position:")
-    value2 = input("Please enter Y position:")
+    x_position = input("\nPlease enter X position: ")
+    y_position = input("Please enter Y position: ")
+
  
-    value1 = int(value1)
-    value2 = int(value2)
+    x_position = int(x_position)
+    y_position = int(y_position)
  
-    print(f'You entered position X:{value1} and position Y:{value2}')
+    print(f'\nYou entered: \nposition X: {x_position}  \nposition Y: {y_position}')
     # Creates the SimpleActionClient, passing the type of the action
     # (FibonacciAction) to the constructor.
     #client = actionlib.SimpleActionClient('/reaching_goal',assignment_2_2022.msg.PlanningAction )
-    global client
+    #global client
 
-    client = actionlib.SimpleActionClient('/reaching_goal',assignment_2_2022.msg.PlanningAction )
+ 
 
     # Waits until the action server has started up and started
     # listening for goals.
+
+    print("\n###############################################")
     print("\nWating for connection to the action server")
+
     client.wait_for_server()
 
     # Creates a goal to send to the action server.
@@ -55,17 +52,17 @@ def target_client():
     goal = PoseStamped()
 
 
-    goal.pose.position.x = value1
-    goal.pose.position.y = value2
+    goal.pose.position.x = x_position
+    goal.pose.position.y = y_position
 
     goal = assignment_2_2022.msg.PlanningGoal(goal)
 
-    rospy.sleep(1)
+   # rospy.sleep(1)
     
     # Sends the goal to the action server.
     client.send_goal(goal)
-    print("\nGoal sent to the sever")
-    rospy.sleep(2)
+    print("\n**Goal sent to the sever**")
+    input("\nPress Enter to select an operation!")
     # rospy.sleep(8)
     # client.cancel_goal()
     interface()
@@ -85,52 +82,57 @@ def cancel_target():
     # listening for goals.
     #client.wait_for_server()
     client.cancel_goal()
-    print(f'target canceled')
+    print(f"\nTarget canceled")
+    input("\n\nPress Enter to select an operation!")
     interface()
 
 
-def input_client():
 
-    print("            Robot control interface            ")
-    value1 = input("enter 1 for set target position and 2 for cancelation\n ")
-    
-    if(value1=="1"):
-        target_client()
-    elif(value1=="2"):
-        cancel_target()  
+def wrong():
+
+    print("!!!! Wrong input !!!!")
+    rospy.sleep(2)
+    interface()
+
+
 
 def interface():
+
     os.system('clear')
     print("###############################################\n")    
-    print("            Robot control interface            \n")
+    print("##          Robot control interface          ##\n")
     print("###############################################\n")
-    print("Select your operation:\n")
     print("1:Target position\n")
     print("2:Cancel\n")
     print("3:Exit\n")   
+
+    user_selection = input("Select your operation: ")
     
-    value1 = input()
-    if(value1=="1"):
+    if   (user_selection == "1"):
         target_client()
-    elif(value1=="2"):
+
+    elif (user_selection == "2"):
         cancel_target() 
-    elif(value1=="3"):
+
+    elif (user_selection == "3"):
         exit()
+
     else:
-        print("wrong input\n")
-        rospy.sleep(2)
-        interface()
+        wrong()
+
 
 
     
 
 if __name__ == '__main__':
-    try:
+    # try:
         # Initializes a rospy node so that the SimpleActionClient can
         # publish and subscribe over ROS.
-        rospy.init_node('client_py')
-        
-        interface()
 
-    except rospy.ROSInterruptException:
-        print("program interrupted before completion", file=sys.stderr)
+    rospy.init_node('NodeA')
+    client = actionlib.SimpleActionClient('/reaching_goal',assignment_2_2022.msg.PlanningAction )
+    interface()
+
+    rospy.spin()
+    # except rospy.ROSInterruptException:
+    #     print("program interrupted before completion", file=sys.stderr)
