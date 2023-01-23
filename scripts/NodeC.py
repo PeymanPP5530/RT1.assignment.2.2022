@@ -3,6 +3,9 @@
 import rospy
 from std_srvs.srv import Empty,EmptyResponse
 import assignment_2_2022.msg
+import os
+
+start_description_flag=1
 
 
 reached_goal_counter =0
@@ -32,9 +35,19 @@ def callback_subscriber(data):
         reached_goal_counter += 1
 
 
+def start_description(start_description_flag):
+    if start_description_flag == 1:
+        os.system('clear')
+        print("\n\n------------------Node description------------------\n\n")
+        print("This node is a service node that, when called,")
+        print("prints the number of goals reached and canceled.")
+        input("\n\nPress Enter to continue!")
+        start_description_flag=0   
 
 
 if __name__ == "__main__":
+
+    start_description(start_description_flag)
 
     rospy.logwarn("service started")
 

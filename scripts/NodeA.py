@@ -13,7 +13,7 @@ import actionlib
 import assignment_2_2022.msg
 import os
 
-
+start_description_flag=1
 
 
 
@@ -121,6 +121,15 @@ def interface():
         wrong()
 
 
+def start_description(start_description_flag):
+    if start_description_flag == 1:
+        os.system('clear')
+        print("\n\n------------------Node description------------------\n\n")
+        print("This is the node that implements an action client, ")
+        print("allowing the user to set a target (x, y) or to ")
+        print("cancel it.")
+        input("\n\nPress Enter to continue!")
+        start_description_flag=0   
 
     
 
@@ -128,6 +137,7 @@ if __name__ == '__main__':
     # try:
         # Initializes a rospy node so that the SimpleActionClient can
         # publish and subscribe over ROS.
+    start_description(start_description_flag)
 
     rospy.init_node('NodeA')
     client = actionlib.SimpleActionClient('/reaching_goal',assignment_2_2022.msg.PlanningAction )
